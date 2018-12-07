@@ -1,8 +1,11 @@
 package net.neferett.redisapi;
 
 import lombok.Data;
-import net.neferett.redisapi.Annotations.RedisApi;
-import org.reflections.Reflections;
+import lombok.Getter;
+import net.neferett.redisapi.DataBase.DataBase;
+import net.neferett.redisapi.DataBase.DataBaseManager;
+import net.neferett.redisapi.DataBase.DataBaseSerialization;
+import net.neferett.redisapi.Datas.SerializableObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +13,44 @@ import java.util.List;
 @Data
 public class RedisAPI {
 
-    public void test() {
-        Reflections rfl = new Reflections("net.neferett.redisapi.Examples");
+    private final DataBaseManager manager;
 
-        List<Class<?>> rr = new ArrayList<>(rfl.getTypesAnnotatedWith(RedisApi.class));
+    private List<SerializableObject> obj = new ArrayList<>();
 
-        System.out.println(rr.size());
-
-        rr.forEach(e -> {
-        });
+    public RedisAPI(String ip, String password, int port) {
+        this.manager = new DataBaseManager(ip, password, port);
     }
 
+    private SerializableObject getObject(Object o, String id) {
+        SerializableObject __obj = this.obj.stream().filter(e ->
+                o instanceof Class ? e.getClazz().equals(o) : e.getObject().equals(o)
+        ).findFirst().orElse(null);
 
+        if (null == __obj) {
+            __obj = new SerializableObject(o, id, this.manager);
+            this.obj.add(__obj);
+        }
+
+        return __obj;
+    }
+
+    public void serialize(Object o){
+        this.serialize(o, null);
+    }
+
+    public void serialize(Object o, String id) {
+        this.getObject(o, id).serialize();
+    }
+
+    public Object deSerialize(Object o) {
+        return this.deSerialize(o, null);
+    }
+
+    public Object deSerialize(Object o, String id) {
+        return this.getObject(o, id).deSerialize();
+    }
+
+    public void close() {
+        this.getManager().closeAll();
+    }
 }

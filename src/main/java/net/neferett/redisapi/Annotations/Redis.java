@@ -7,5 +7,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.TYPE})
-public @interface RedisApi {
+public @interface Redis {
+
+    int db() default 0;
+
+    boolean folder() default false;
+
 }

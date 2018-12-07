@@ -18,5 +18,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.4'
     compile group: 'org.json', name: 'json', version: '20180813'
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
-    compile group:'net.bytebuddy:byte-buddy:1.7.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
+
 }
