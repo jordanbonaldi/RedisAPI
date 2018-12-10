@@ -3,11 +3,9 @@ package net.neferett.redisapi.DataBase;
 import lombok.Data;
 import net.neferett.redisapi.Annotations.Redis;
 import net.neferett.redisapi.Utils.SerializationUtils;
+import redis.clients.jedis.Jedis;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -57,9 +55,15 @@ public class DataBaseManager {
         Redis redis = (Redis) obj.getAnnotation(Redis.class);
         DataBase db = this.getDataBase(redis.db());
 
-        Map<String, String> all = db.getConnector().getRessource().hgetAll("name:*");
+        Jedis jedis = db.getConnector().getRessource();
 
-        return all.entrySet().stream().filter(e -> this.arraysContains(e.getValue(), args))
+        HashMap<String, String> map = new HashMap<>();
+
+        jedis.keys(obj.getSimpleName() + ":*").forEach(e ->
+            map.put(e, jedis.hgetAll(e).get("data"))
+        );
+
+        return map.entrySet().stream().filter(e -> this.arraysContains(e.getValue(), args))
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> SerializationUtils.deSerialize(obj, e.getValue())));
     }
 }
