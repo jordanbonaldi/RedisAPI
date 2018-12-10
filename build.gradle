@@ -1,6 +1,4 @@
-plugins {
-    id 'java'
-}
+apply plugin: 'java'
 
 group 'RedisAPI'
 version '1.0-SNAPSHOT'
@@ -9,6 +7,17 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+task buildEngine(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'CoreEngin SoftWare',
+                'Implementation-Version': version,
+                'Main-Class': 'net.neferett.coreengine.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
 
 dependencies {

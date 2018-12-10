@@ -9,6 +9,7 @@ import net.neferett.redisapi.Datas.SerializableObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class RedisAPI {
@@ -44,6 +45,10 @@ public class RedisAPI {
 
     public Object deSerialize(Object o) {
         return this.deSerialize(o, null);
+    }
+
+    public Map<String, Object> contains(Class o, String... args) {
+        return this.manager.contains(o, args);
     }
 
     public Object deSerialize(Object o, String id) {
