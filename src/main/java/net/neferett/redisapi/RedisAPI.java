@@ -24,13 +24,16 @@ public class RedisAPI {
 
     private SerializableObject getObject(Object o, String id) {
         SerializableObject __obj = this.obj.stream().filter(e ->
-                o instanceof Class ? e.getClazz().equals(o) : e.getObject().equals(o)
+                o instanceof Class ? e.getClazz().getSimpleName()
+                        .equalsIgnoreCase(((Class) o).getSimpleName()) : e.getObject().equals(o)
         ).findFirst().orElse(null);
 
         if (null == __obj) {
             __obj = new SerializableObject(o, id, this.manager);
             this.obj.add(__obj);
         }
+
+        __obj.setId(id);
 
         return __obj;
     }

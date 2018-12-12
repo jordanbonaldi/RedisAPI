@@ -1,6 +1,7 @@
 package net.neferett.redisapi.DataBase;
 
 import lombok.Data;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import net.neferett.redisapi.Annotations.Redis;
 import net.neferett.redisapi.Datas.ManipulateDatas;
@@ -45,6 +46,7 @@ public class DataBaseSerialization {
     }
 
     public String deserialize() {
+        this.manipulateDatas.setName(this.id);
         this.manipulateDatas.refreshCache();
         return this.manipulateDatas.get("data");
     }

@@ -1,6 +1,7 @@
 package net.neferett.redisapi.Datas;
 
 import lombok.Data;
+import lombok.NonNull;
 import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
@@ -15,7 +16,8 @@ public class ManipulateDatas {
 
     private final boolean folder;
 
-    private final String name;
+    @NonNull
+    private String name;
 
     private String realName;
 
