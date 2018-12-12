@@ -16,7 +16,8 @@ public class DataBaseSerialization {
 
     private final DataBaseConnector connector;
 
-    private final String id;
+    @NonNull
+    private String id;
 
     private final Redis redis;
 

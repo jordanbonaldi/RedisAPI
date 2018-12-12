@@ -19,13 +19,8 @@ public class ManipulateDatas {
     @NonNull
     private String name;
 
-    private String realName;
-
     private String checkName() {
-        if (null == this.realName)
-            this.realName = this.folder ? this.clazzName + ":" + this.name : this.clazzName;
-
-        return this.realName;
+        return this.folder ? this.clazzName + ":" + this.name : this.clazzName;
     }
 
     private Map<String, String> cache = new HashMap<>();

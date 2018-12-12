@@ -57,6 +57,7 @@ public class SerializableObject {
     }
 
     public Object deSerialize() {
+        this.serialization.setId(this.id);
         this.serialization.getManipulateDatas().setName(this.id);
         return SerializationUtils.deSerialize(this.clazz, this.serialization.deserialize());
     }
