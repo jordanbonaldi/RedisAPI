@@ -28,8 +28,13 @@ public class DataBaseConnector {
     }
 
     public Jedis getRessource() {
-        //IMPL Reconnection to clean IDLE
-        return this.cachePool.getResource();
+        try {
+            return this.cachePool.getResource();
+        } catch (Exception ignored) {
+            this.disable();
+            this.enable();
+            return this.cachePool.getResource();
+        }
     }
 
     public void enable() {
